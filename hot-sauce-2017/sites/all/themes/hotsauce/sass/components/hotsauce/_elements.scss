@@ -1,0 +1,480 @@
+// HOMEPAGE
+.front {
+	.entity-paragraphs-item {
+		// default
+		@extend %layout-center;
+	  padding: 45px 0;
+
+		&:first-child {
+      margin: auto;
+      padding: 0;
+      padding-bottom: 60px;
+  		text-align: center;
+
+      // @include respond-to(l) {
+      //   padding-top: 10px;
+      // }
+      //
+      // @include respond-to(xxl) {
+      //   padding-top: 15px;
+      // }
+
+      p {
+				color: color('grey-dark');
+        margin: 0 auto;
+
+        @include respond-to(bm) {
+          max-width: 550px;
+        }
+
+        @include respond-to(m) {
+          max-width: 700px;
+        }
+
+				@include respond-to(xl) {
+					color: color('white');
+				}
+      }
+
+  		@include respond-to(xl) {
+        background-color: transparent;
+    		color: white;
+    		max-width:65% !important;
+				z-index: 11;
+
+        &:before,
+        &:after {
+          content: none;
+        }
+  		}
+    }
+
+    &:nth-of-type(2) {
+      @include respond-to(l) {
+        padding-top: 65px;
+      }
+
+			@include respond-to(xl) {
+				padding-top: 125px;
+			}
+    }
+
+    p {
+      margin: 0;
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+	}
+
+	.paragraphs-item-5 {
+  	// capabilities
+    @extend %fake-fullwidth;
+		@include undo-zen-grid-container();
+		max-width: none !important;
+    background: color(grey-extra-light);
+    // padding-top: 1px;//fix weird issue where it gets negative margin??
+	}
+	.paragraphs-item-6 {
+		@include undo-zen-grid-container();
+		clear: both;
+		max-width: none !important;
+
+		& > .field {
+			@extend %layout-center;
+			padding: 0;
+		}
+	}
+
+  .paragraphs-item-7,
+  .paragraphs-item-12 {
+    @include full-width-background-color(color('white'));
+  }
+}
+
+// END HOMEPAGE
+body.page-node-14 {
+	// clean up all the titles etc. later
+	& .node-page {
+		@extend %layout-center;
+		$zen-columns: 2 !global; // !global;
+		@include zen-grid-container($context: grid-item);
+
+		// .paragraphs-item-10 {
+    //   @include respond-to(bm) {
+    //     @include zen-grid-item(1, 1);
+    //   }
+		// }
+	}
+
+	.node-person.view-mode-full {
+		display: none;
+	}
+}
+
+body.page-node-38 {
+  // main capabilities page
+  .field-name-field-body {
+    @include zen-respond-to-grid();
+    @extend %centered-body;
+  }
+}
+body.page-node-31 {
+  // the contact page. Not necessarily very future-proof.
+  @extend %clearfix;
+  @include respond-to(m) {
+    $zen-columns: 12 !global;
+  	@include zen-grid-container($context: grid-item);
+
+    .paragraphs-item-body-text {
+      @include zen-grid-item(6, 1);
+    }
+
+    .paragraphs-item-embedded-node {
+      @include zen-grid-item(5, 8);
+      clear: none;
+    }
+  }
+
+	.paragraphs-items {
+		padding: {
+			top: 60px;
+			bottom: 60px;
+		}
+
+		.field-name-field-body {
+			h2 {
+				&, &::before {
+					margin-top: 0;
+				}
+			}
+
+			p {
+				color: color('grey-dark');
+				font-size: 18px;
+			}
+		}
+
+		.street-address,
+		.locality,
+		.region,
+		.postal-code {
+			color: color('grey-dark');
+			font: {
+				family: $montserrat;
+				size: 22px;
+				weight: bold;
+			}
+			text-transform: uppercase;
+		}
+
+		.location-hidden,
+		.country-name {
+			display: none;
+		}
+
+		.field-name-field-phone a {
+			@extend %more-link;
+		}
+	}
+
+	.region-content-bottom {
+		top: 0;
+	}
+}
+
+body.page-node-14 {
+  /* ABOUT PAGE */
+  .layout-center {
+    background-color: white;
+  }
+}
+
+.paragraphs-item-testimonial {
+  @include zen-new-row();
+	@include full-width-background-color(color('grey-extra-light'));
+	background-color: color('grey-extra-light');
+}
+
+
+/* GC MOVED FEATURES HERE FOR NOW */
+.paragraphs-items-field-features {
+//  @extend %clearfix;
+
+		@include zen-respond-to-grid() {
+       margin: 0 auto;
+      
+      .group-content > .field-name-body {
+				@include zen-grid-item(10, 2);  //indent it a bit
+
+				p {
+					@include zen-grid-item(6, 1);
+      	}
+			}
+
+      .field-name-field-features {
+//        @include undo-zen-grid-item();
+        @include undo-zen-apply-gutter-padding()
+      }
+
+      // bounce our features over two columns - use clearer div to restart
+  		.group-content {
+  			@include column-view($n: 2, $modifier: 6, $parent: '.field-name-field-features', $child: '.paragraphs-item-feature.normal');
+  		}
+		}
+
+ 		.group-content > .field-name-body {
+      // @include respond-to(l) {
+      //   min-height: 340px;
+      // }
+
+			.main-image {
+				height: 0;
+				margin: auto;
+				text-align: center;
+
+				img {
+					width: 100%;
+					max-width: 350px;
+
+					@include respond-to(l) {
+						max-width: 530px;
+					}
+				}
+			}
+
+			p {
+				margin: {
+					top: 30px;
+					bottom: 0;
+				}
+
+				@include respond-to(m) {
+					margin-top: 0;
+				}
+			}
+		}
+		
+    .field-name-field-features {
+      
+      @include undo-zen-apply-gutter-padding();
+     // featured features!
+
+     @include zen-respond-to-grid() {
+       .primary {
+         clear: both;
+         text-align: center;
+         h3 { 
+           text-align: center;
+         }
+       }
+
+        .paragraphs-item-feature.priority-a,
+        .paragraphs-item-feature.priority-b {
+  				  @include clearfix();
+						padding-top: 60px;
+            clear: both;
+//          position: relative;
+          .group-content {
+//            	@include centerer(false, true);
+          }
+          &.paragraphs-item-feature.priority-a {
+            .field-name-field-media {
+              @include zen-grid-item(4, 9);
+            }
+
+            .group-content {
+              @include zen-grid-item(7, 1);
+            }
+          }
+          
+          &.paragraphs-item-feature.priority-b {
+            .field-name-field-media {
+              @include zen-grid-item(4, 1);
+            }
+
+            .group-content {
+              @include zen-grid-item(7, 6);
+            }
+          }
+        } // end priority features
+
+
+        .paragraphs-item-feature.minor {
+            &:nth-child(odd) {
+//              clear: left;
+              @include zen-grid-item(6, 1);
+            }
+            &:nth-child(even) {
+              @include zen-grid-item(6, 7);            
+            }
+        }
+
+      }
+
+    }
+    
+    
+    // gallery
+    .paragraphs-item-gallery {
+      @extend %clearfix;
+      clear: both;
+
+      .field-media div.file {
+        text-align: center;
+      }
+
+      // there has to be a better way of doing this but I can't think of it right now. */
+      @include zen-respond-to-grid() {
+        &.media-count-1 .field-media {
+          div.file {
+            @include zen-grid-item(8, 3);
+          }
+        }
+
+        &.media-count-2 .field-media {
+          > .field-item-1 {
+            @include zen-grid-item(4, 2);
+          }
+          > .field-item-2 {
+            @include zen-grid-item(4, 8);
+          }
+        }
+
+        &.media-count-3 .field-media {
+          > .field-item-1 {
+            @include zen-grid-item(4, 1);
+          }
+          > .field-item-2 {
+            @include zen-grid-item(4, 5);
+          }
+          > .field-item-3 {
+            @include zen-grid-item(4, 9);
+          }
+        }
+
+        &.media-count-4 .field-media {
+          > .field-item-1,
+          > .field-item-3 {
+            @include zen-grid-item(4, 2);
+          }
+
+          > .field-item-2,
+          > .field-item-4 {
+            @include zen-grid-item(4, 8);
+          }
+
+          .field-item-3 {
+            clear: both;
+          }
+        }
+      }
+
+      @include zen-respond-to(xl) {
+        &.media-count-4 .field-media {
+          > .field-item-3 {
+            clear: none;
+          }
+          @for $i from 1 through 4 {
+            > .field-item-#{$i} {
+              $start: 1 + (3 * ($i - 1));
+              @include zen-grid-item(3, $start);
+            }
+          }
+        }
+      }
+    } // end gallery
+	}
+
+.paragraphs-items-field-features {
+  @extend %clearfix !optional;
+  clear: both;
+
+  .group-content > & {// the outer container
+    @include respond-to(l) {
+  //    @include zen-grid-item(10, 2);  //indent it a bit -- turned this off because it did funny things
+    }
+  }
+
+  .paragraphs-item-embedded-view > div {
+    // turned this off - not sure why it was set ... broke the gallery
+//    padding: 0;
+  }
+}
+
+.paragraphs-item-feature {
+	padding: {
+		top: 30px;
+		bottom: 30px;
+	}
+
+	h3 {
+		margin: {
+			top: 0;
+			bottom: 0;
+		}
+		text-align: left;
+	}
+}
+
+.block-hotsauce-sonos {
+  @include zen-respond-to-grid {
+    @include zen-grid-item(8, 1);
+  }
+  
+  .now-playing-details {
+      @extend %clearfix;      
+      border-top: 10px solid color(brand-primary);
+      background: color('grey-extra-light');
+      padding: 30px 40px;
+            
+      .now-playing-image {
+        @include zen-respond-to-grid {
+          @include zen-grid-item(2.5, 1);
+        }
+      }
+      
+      .track-details {
+        
+        @include zen-respond-to-grid {
+          @include zen-grid-item(5, 3.5);
+          padding-top: 20px;
+        }
+
+        color: color('grey-light');
+                
+        .now-playing-track {
+          font-weight: bold;
+          padding-bottom: 0.5em;
+        }
+        .now-playing-artist {
+          font-style: italic;
+          
+          &::before {
+            content: 'Artist:\00a0';
+          }
+        }
+        
+        .next-track-info {
+          padding-top: 1em;
+          font-size: small;
+          font-style: italic;          
+          
+          div {
+            display: inline;
+          }
+          .next-track-track {
+            
+            &::before {
+              content: "Up next:\00a0";
+            }
+            &::after {
+              content: "\00a0-\00a0";
+            }
+          }
+        }  
+      }
+  }
+  
+}

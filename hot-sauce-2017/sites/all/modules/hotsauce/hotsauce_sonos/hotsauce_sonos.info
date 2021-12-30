@@ -1,0 +1,10 @@
+name = Hot Sauce Sonos
+description = Quick little module to interface w/ our Sonos queue
+core = 7.x
+package = Hot Sauce
+configure = admin/config/media/sonos
+
+version = "7.x-1.1"
+core = "7.x"
+// project = "hotsauce"
+

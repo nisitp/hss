@@ -1,0 +1,14 @@
+name = Advanced Entity Tokens
+description = "Reveals all the Drupal entities (by id) to token."
+package = Token
+core = 7.x
+dependencies[] = token
+dependencies[] = entity
+dependencies[] = entity_token
+
+; Information added by Drupal.org packaging script on 2014-09-09
+version = "7.x-1.0-beta2+4-dev"
+core = "7.x"
+project = "aet"
+datestamp = "1410226428"
+

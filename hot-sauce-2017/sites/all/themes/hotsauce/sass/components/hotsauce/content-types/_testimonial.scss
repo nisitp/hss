@@ -1,0 +1,124 @@
+.node-testimonial {
+	font-family: $montserrat;
+	font-weight: 200;
+	padding: 100px 0;
+	text-align: left;
+
+  &.node-teaser {
+    @include font-size(l);
+    position: relative;
+  }
+
+	&:before,
+  &:after {
+    @extend %icon;
+    color: color('brand-primary');
+    display: inline-block;
+		font-size: 60px;
+		height: 100px;
+		line-height: normal;
+    position: absolute;
+		z-index: 100;
+
+    @include respond-to(m) {
+      font-size: 60px;
+    }
+
+		@include respond-to(l) {
+			font-size: 100px;
+		}
+  }
+
+	&:before {
+		@extend .fa-quote-left;
+		@extend .fa-pull-left;
+		top: 30px;
+		left: 0;
+		z-index: 0;
+
+		@include respond-to(m) {
+			top: 120px;
+		}
+
+		@include respond-to(xl) {
+			left: -25px;
+		}
+	}
+
+	&:after {
+		content: "\f10e";
+		@extend .fa-quote-right; // Doesn't work???
+		@extend .fa-pull-right;
+		bottom: 100px;
+		right: 0;
+
+		@include respond-to(xl) {
+			right: -25px;
+		}
+
+		@include respond-to(bm) {
+			content: none;
+		}
+	}
+
+  strong {
+    font-weight: 600;
+  }
+
+  > div {
+		@include zen-grid-item(10, 1);
+		float: none;
+    margin: {
+			top: 0;
+			right: 0;
+		}
+
+		@include respond-to(m) {
+			@include zen-grid-item(8, 3);
+			float: none;
+		}
+
+		@include respond-to(xl) {
+			@include zen-grid-item(10, 2);
+			float: none;
+		}
+
+		p {
+			color: color('grey');
+			font: {
+				family: $verdana;
+				size: 40px;
+			}
+			max-width: none;
+      line-height: 1.5;
+
+			@include respond-to(bm) {
+				margin-top: 0;
+			}
+    }
+
+    @include respond-to(m) {
+      @include font-size(l);
+    }
+
+    @include respond-to(xl) {
+      @include font-size(xl);
+    }
+  }
+
+	.field-name-field-client {
+		color: color('grey');
+		font: {
+			family: $verdana;
+			size: 30px;
+			style: italic;
+			weight: 900;
+		}
+		line-height: 1.5;
+		max-width: none;
+
+		@include respond-to(xl) {
+			font-size: 40px;
+		}
+	}
+} // end node-testimonial

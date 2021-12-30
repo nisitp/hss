@@ -1,0 +1,13 @@
+name        = Context Block Disable
+description = Allows disabling of blocks as a Context reaction
+package     = Context
+core        = 7.x
+
+dependencies[] = context
+
+; Information added by Drupal.org packaging script on 2016-03-03
+version = "7.x-2.1+3-dev"
+core = "7.x"
+project = "context_block_disable"
+datestamp = "1456966510"
+

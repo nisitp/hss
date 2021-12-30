@@ -1,0 +1,243 @@
+.node-type-capability {
+	background-color: color('white');
+
+	main .node-promoted {
+		> h2 {
+			@extend %centered-body;
+		}
+
+		.field-name-body {
+			text-align: center;
+
+			p {
+				margin: {
+					left: auto;
+					right: auto;
+				}
+			}
+		}
+	}
+
+	&.page-node {
+  	/* not a teaser */
+
+  	h2,
+  	.field-name-body {
+			float: none;
+			margin-top: 10px;
+  	}
+
+	}
+
+  main {
+    @extend %undo-layout-center;
+
+    & > div {
+      @extend %layout-center;
+    }
+
+		.block__title {
+			@extend %layout-center;
+			padding: {
+				left: 0;
+				right: 0;
+				bottom: 40px;
+			}
+		}
+  }
+
+  // projects for capabilities page
+  .view-id-projects.view-display-id-block_1 {
+    .views-row {
+      @extend %clearfix;
+      clear: both;
+
+		  & > div {
+        @extend %layout-center;
+        @include padding(1 0);
+				@include zen-apply-gutter-padding();
+      }
+    }
+
+    .views-row-odd {
+      background-color: color('grey-extra-light');
+    }
+
+    @include respond-to(m) {
+      .views-row-odd {
+        .group-images {
+          @include zen-grid-item(4, 1);  //indent it a bit
+        }
+        .group-content {
+          @include zen-grid-item(7, 6);
+        }
+      }
+
+     .views-row-even {
+        .group-images {
+          @include zen-grid-item(4, 9);  //indent it a bit
+        }
+
+        .group-content {
+          @include zen-grid-item(7, 1);
+
+					.main-image {
+						display: none;
+					}
+        }
+      }
+    }
+
+		.field-name-node-link {
+			text-align: left;
+
+			a {
+				@extend %more-link;
+			}
+		}
+  }
+
+	.node-capability:first-of-type h2:first-of-type {
+		margin-top: 0;
+	}
+} // end node capability
+
+.node-type-capability {
+  /* page level styling for capability */
+	@include curvy-section('.region-content-bottom');
+
+	.header.header {
+		overflow: hidden;
+
+		.inner {
+			height: 400px;
+
+			@include respond-to(m) {
+				height: 575px;
+			}
+
+			@include respond-to(l) {
+				height: 550px;
+			}
+
+			&::after {
+				background: {
+					position: center bottom;
+					image: url('../images-source/Looping-Banner-Wave-Reversed-White.svg');
+					size: auto 57px;
+					repeat: repeat-x;
+				}
+				content: '';
+				display: block;
+				height: 100%;
+				position: absolute;
+				right: -2.5%;
+				bottom: 0;
+				left: -2.5%;
+				width: 105%;
+				z-index: 2;
+
+				@include respond-to(m) {
+					background-size: auto 77px;
+				}
+
+				@include respond-to(l) {
+					background-size: auto 110px;
+				}
+
+				@include respond-to(xxxl) {
+				  left: -5000%;
+					right: -5000%;
+					width: 10000%;
+				}
+			}
+		}
+
+		.region-header .block-ds-extras {
+			display: table;
+			height: 300px;
+			width: 100%;
+
+			@include respond-to(m) {
+				height: 400px;
+			}
+
+			@include respond-to(l) {
+				height: 330px;
+			}
+
+			&:after {
+				background: {
+					position: center center;
+					size: cover;
+				}
+				left: -25%;
+				right: -25%;
+				height: 345px;
+
+				@include respond-to(m) {
+					height: 475px;
+				}
+
+				@include respond-to(l) {
+					height: 450px;
+				}
+			}
+		}
+
+		.field-name-title {
+			display: table-cell;
+
+			h1 {
+				background-color: color('brand-primary');
+				padding: 25px;
+
+				@include respond-to(m) {
+					width: 50%;
+				}
+
+				&:before {
+					color: color('brand-primary');
+				}
+			}
+		}
+	}
+
+	&.with-half-header main {
+		@include respond-to(m) {
+			position: relative;
+			top: -250px;
+		}
+
+		@include respond-to(xl) {
+			// height: 600px;
+			top: -300px;
+		}
+	}
+
+	.field-name-field-image {
+		text-align: center;
+
+		@include respond-to(m) {
+			@include zen-grid-item(6, 1);
+			float: none;
+		}
+
+		+ p {
+			padding-left: 30px;
+		}
+	}
+} // dunno why duplicated
+
+.node-capability {
+  /* node level - e.g. for teasers etc. */
+  &.node-teaser {
+    &:hover {
+      /* handling click w/ js */
+      cursor: pointer;
+      h3 {
+        color: color(brand-primary);
+      }
+    }
+  }
+}

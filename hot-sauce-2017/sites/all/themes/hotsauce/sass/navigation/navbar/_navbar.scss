@@ -1,0 +1,259 @@
+// Dependencies.
+@import 'components/visually-hidden/visually-hidden';
+@import 'zen-grids/background';
+
+// Navbar
+//
+// A simple method to get navigation links to appear in one line.
+//
+// Markup: navbar.twig
+//
+// Style guide: navigation.navbar
+
+.navbar,
+%navbar {
+//  margin: 0;
+//  padding: 0;
+  //text-align: left;
+
+  @include rtl() {
+    text-align: right;
+  }
+
+  &__item,
+  li {
+    float: left;
+    padding: 0 10px 0 0;
+    list-style-type: none;
+    list-style-image: none;
+
+    @include rtl() {
+      float: right;
+      padding: 0 0 0 10px;
+    }
+  }
+}
+
+//
+// Drupal selectors.
+//
+
+.main-navigation,
+.region-header .navbar {
+  font-family: $montserrat;
+  margin-top: -40px;
+
+  @include respond-to(m) {
+    margin-top: 0;
+  }
+
+  // Hide the block titles put into the main-navigation area of the page.tpl.php.
+  .block-menu .block__title,
+	&.block-menu-block .block__title,
+  .block-menu-block .block__title {
+    @extend %visually-hidden;
+  }
+
+  // Main menu and secondary menu links and menu block links.
+  .links,
+  .menu {
+    @extend %navbar;
+  }
+
+  a {
+    color: color('grey');
+    display: block;
+    font-weight: 100;
+	  text: {
+      decoration: none;
+      transform: uppercase;
+    }
+
+    &:hover {
+      color: black;
+    }
+
+    @include breakpoint(max-width 1024px) {
+      font-size: 14px;
+    }
+
+    @include breakpoint(1024px) {
+      position: relative;
+      bottom: 13px;
+    }
+
+    &.active,
+    &.active-trail {
+      &::after {
+        @include respond-to(m) {
+          background-color: color('brand-primary');
+          content: '' !important;
+          display: block;
+          height: 5px;
+          margin: auto;
+          position: relative;
+          bottom: 5px;
+          transition: width 125ms;
+
+          @include breakpoint(max-width 1024px) {
+            height: 4px;
+            bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  #nav-phone {
+	  @extend %clearfix;
+	  display: block;
+	  float: none;
+    margin: 0;
+
+	  a {
+  	  @extend %phone;
+
+      @include breakpoint(max-width 1024px) {
+        font-size: 125%;
+      }
+
+      &::after {
+        content: none;
+      }
+	  }
+  }
+}
+
+.region-header .navbar {
+	.menu {
+		margin-top: 0;
+    padding-left: 0;
+		position: absolute;
+		right: 0;
+
+		li {
+      margin-top: 0;
+      margin-left: 5px;
+      text-align: right;
+
+      @include font-size(s);
+
+			@include respond-to(xxl) {
+  			@include font-size(m);
+			}
+
+      @include breakpoint(1024px) {
+        margin-top: 20px;
+      }
+
+			&#nav-phone {
+        @include respond-to(bm) {
+          display: none;
+        }
+
+        a {
+    			font-size: 150%;
+  			}
+      }
+		}
+	}
+
+/* ALL FOR THE CENTERED HEADER; NO LONGER IN USE.
+  // Set 1 unit of vertical rhythm on the top and bottom padding.
+  @include padding(1 0);
+
+	.menu {
+		// A bit of hackery to get this layout out well at different breaks.
+		li.nav-home {
+			// the home link; hide the text since we're displaying a logo instead
+			a {
+				text-indent: 100%;
+				white-space: nowrap;
+				overflow: hidden;
+				display: block;
+			}
+		}
+
+		@include respond-to(m) {
+			@include zen-grid-container();
+			border:2px solid blue;
+
+			$zen-columns: 6 !global;
+//			@include zen-grid-background();
+			// Quick and dirty
+
+			li {
+				a {
+			  	display: flex;
+					justify-content: center;
+					align-items:center;
+					text-align: center;
+					vertical-align: middle;
+					height: 150px;
+					@include font-size(s);
+					text-transform: uppercase;
+					text-decoration: none;
+				}
+			}
+
+			li:nth-child(1) {
+				@include zen-grid-item(1, 2);
+			}
+
+			li:nth-child(2) {
+				@include zen-grid-item(1, 3);
+			}
+
+			li.nav-home {
+				// This is the home link.
+				@include zen-grid-item(1, 1);
+				display: block;
+				height: 150px;
+				background: transparent image-url('navigation','nav-menu/HotSauce_Logo.png') no-repeat 50% 50%;
+				background-size: contain;
+			}
+
+			li:nth-child(4) {
+				@include zen-grid-item(1, 4);
+			}
+
+			li:nth-child(5) {
+				@include zen-grid-item(1, 5);
+			}
+		}
+
+		@include respond-to(xl) {
+			// on big screens, scrunch it in.
+//			max-width: 1200px;
+//			margin: auto;
+		}
+	}
+	*/
+}
+
+body.adminimal-menu div#admin-menu {
+  z-index: 1000;
+}
+
+body.admin-menu.adminimal-menu:before {
+  background-color: #fff;
+}
+
+body.adminimal-menu div#admin-menu a:hover,
+body.adminimal-menu #admin-menu .dropdown li li li:hover,
+body.adminimal-menu #admin-menu .dropdown li:hover,
+body.adminimal-menu #admin-menu .dropdown li.admin-menu-toolbar-category a:focus,
+body.adminimal-menu div.shortcut-toolbar div#toolbar a#edit-shortcuts:focus,
+body.adminimal-menu #admin-menu .dropdown li.admin-menu-action.admin-menu-users a:hover,
+body.adminimal-menu #admin-menu #admin-menu-wrapper div#toolbar div.toolbar-shortcuts ul li a:hover,
+body.adminimal-menu #admin-menu #admin-menu-wrapper .dropdown li li.expandable:hover {
+  background-color: #d43929 !important;
+}
+
+body.adminimal-menu div#admin-menu .dropdown li.expandable a:hover {
+  background-color: transparent !important;
+}
+
+body.adminimal-menu #admin-menu .dropdown li ul {
+  border-color: #e63d2e !important;
+}

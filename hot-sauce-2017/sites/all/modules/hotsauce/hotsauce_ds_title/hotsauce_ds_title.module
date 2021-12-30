@@ -1,0 +1,51 @@
+<?php
+
+function hotsauce_ds_title_ds_fields_info_alter(&$fields, $entity_type) {
+  if ($entity_type == 'node') {
+   $fields['title']['function'] = 'hotsauce_ds_title_custom_render_function';
+  }
+}
+
+function hotsauce_ds_title_custom_render_function($field) {
+  $output = '';
+  $settings = isset($field['formatter_settings']) ? $field['formatter_settings'] : array();
+  $settings += $field['properties']['default'];
+  // Basic string.
+  if (isset($settings['link text'])) {
+    $output = t($settings['link text']);
+  }
+  elseif (isset($field['properties']['entity_render_key']) && isset($field['entity']->{$field['properties']['entity_render_key']})) {
+    if ($field['entity_type'] == 'user' && $field['properties']['entity_render_key'] == 'name') {
+      $output = format_username($field['entity']);
+    }
+    else {
+      $output = $field['entity']->{$field['properties']['entity_render_key']};
+    }
+  }
+
+  if (empty($output)) {
+    return;
+  }
+
+  $output = filter_xss($output, array('em', 'strong'));
+
+  // Link.
+  if ($settings['link']) {
+    if (isset($field['entity']->uri['path'])) {
+      $path = $field['entity']->uri['path'];
+    }
+    else {
+      $uri_info = entity_uri($field['entity_type'], $field['entity']);
+      $path = $uri_info['path'];
+    }
+    $output = l($output, $path, array('html' => TRUE));
+  }
+
+  // Wrapper and class.
+  if (!empty($settings['wrapper'])) {
+    $wrapper = check_plain($settings['wrapper']);
+    $class = (!empty($settings['class'])) ? ' class="' . check_plain($settings['class']) . '"' : '';
+    $output = '<' . $wrapper . $class . '>' . $output . '';
+  }
+  return $output;
+}

@@ -1,0 +1,102 @@
+<?php
+
+/**
+ * Implements hook_library().
+ */
+ 
+ 
+function hotsauce_sonos_block_info() {
+  $blocks['sonos_queue'] = array(
+	'info' => t('Sonos Queue'),
+	'cache' => DRUPAL_NO_CACHE,
+  );
+
+  return $blocks;
+}
+
+function hotsauce_sonos_block_view($delta = '') {
+  // The $delta parameter tells us which block is being requested.
+  switch ($delta) {
+    case 'sonos_queue':
+      // Create your block content here
+      $block['subject'] = t('Hot Tunes');
+
+      $url=variable_get('sonos_uri','http://localhost:5005').'/zones';      
+      
+      $ch=curl_init();
+      $timeout=5;
+      
+      curl_setopt($ch, CURLOPT_URL, $url);
+      curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+      curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $timeout);
+      
+      $json=curl_exec($ch);
+      curl_close($ch);
+      
+      if ($json) {
+        $data = json_decode($json);
+        $c = $data[0]->coordinator;
+        $state = $c->state;
+        $track = $state->currentTrack;
+        $next = $state->nextTrack;
+      dpm($state);
+      dpm($track);
+        
+        $block['content'] = "<p>Hot Sauce is currently listening to &hellip;</p>
+        
+        <div class='now-playing-details'>
+          <div class='now-playing-image'> 
+            <img src='" . $track->absoluteAlbumArtUri . "' />
+          </div>
+          <div class='track-details'>
+            <div class='now-playing-track-info'>
+              <div class='now-playing-track'>" . $track->title . "</div>
+              <div class='now-playing-artist'>" . $track->artist . "</div>
+            </div>
+            <div class='next-track-info'>
+              <div class='next-track-track'>" . $next->title . "</div>
+              <div class='next-track-artist'>" . $next->artist . "</div>
+            </div>
+          </div>          
+        </div>
+        ";
+        
+  
+      
+  
+      //  $block['content'] .= "<strong>VOLUME: " . $state->volume . "</strong>";
+       break;
+      } else { return; }
+   }
+
+  return $block;
+}
+
+/**
+ * Implements hook_menu().
+ */
+function hotsauce_sonos_menu() {
+  $items['admin/config/media/sonos'] = array(
+    'title' => 'Sonos Interface Configuration',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('hotsauce_sonos_form'),
+    'access arguments' => array('administer modules'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+ 
+  return $items;
+}
+
+/**
+ * Admin form to sonos interface
+*/
+function hotsauce_sonos_form($form, &$form_state) {
+  $form['sonos_uri'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Sonos URI'),
+    '#required' => TRUE,
+    '#default_value' => variable_get('sonos_uri', 'http://localhost:5005'),
+  );
+ 
+  return system_settings_form($form);
+}

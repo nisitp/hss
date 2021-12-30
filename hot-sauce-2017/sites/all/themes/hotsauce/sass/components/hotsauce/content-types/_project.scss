@@ -1,0 +1,229 @@
+body.node-type-project {
+    @include curvy-section('.region-content-bottom');
+
+}
+
+// main body
+body.node-type-project {    
+}
+
+// individual nodes
+.node-project {
+  
+  &.view-mode-teaser {
+  	@extend %vertical-centered;
+  	min-height: 250px;
+  	position: relative;
+  	z-index: 2;
+  	cursor: pointer;
+    border: 2px solid color(white);
+
+  	&.node-id-30 h3 {
+  		font-size: 20px;
+  
+  		@include respond-to(xxxs) {
+  			font-size: 35px;
+  		}
+  
+  		@include respond-to(m) {
+  			font-size: 30px;
+  		}
+  
+  		@include respond-to(l) {
+  			font-size: 25px;
+  		}
+  
+  		@include respond-to(xl) {
+  			font-size: 30px;
+  		}
+    }
+
+    h3 {
+      @extend %reversed-header;
+    }
+  		/* TODO - come back and refactor this to use chroma or similar and generally DRY things up */
+  	h3,
+  	h4 {
+  		color: white;
+  		text-align: center;
+  		margin: 0;
+  		display: inline-block;
+  		max-width: 75%;
+  		padding: 5px;
+  		margin: 0 auto;
+  	}
+  	h3 {
+    	background: rgba(255,0,0,.75);
+  	}
+  	.field-name-title { width: 100%; margin-top: 10px; text-align: center; }
+  	h4 { 
+    	/*
+    	background: rgba(255,255,255,.75);
+    	border: 2px solid red;
+    	color: red;    	
+    	*/
+    	font-weight: 200;    	
+      color: white;
+      visibility: hidden;
+  	}
+
+  	&:before,
+  	&:after {
+  		content: ' ';
+  		display: block;
+  		position: absolute;
+  		width: 100%;
+  		height: 100%;
+  		background-size: cover;
+  		opacity: 0;
+  		top: 0;
+  		left: 0;
+  		z-index: -1;
+  	}
+  
+    &:hover {
+      h4 {
+        visibility: visible;
+        background: transparent;
+        border-color: transparent;
+        color: white;
+        animation: .25s fadein;
+      }
+    }
+  	&:hover:after {
+  		background: red;
+    	display: block;
+      opacity: 1;
+//  		animation: .5s fadein;
+  	}
+
+  	&:before {
+      opacity: 1;
+    }
+  
+  	&.previously-hovered:after {
+    	display: block; // prevent the initial fade out by setting a class on first hover
+  	}
+  } // end .node-project teaser
+  &.view-mode-full {
+    @extend %clearfix;
+    
+      .field-name-field-features {
+        @extend %clearfix;
+
+      }
+      .group-content {
+
+				.main-image {
+  				@include zen-respond-to(bm) { // mobile only
+    				margin: -130px auto 0 auto;
+    				text-align: center;
+  				}
+  				@include zen-respond-to-grid() { // only m and above
+  					@include zen-grid-item(4, 1);
+  //  					position: relative;
+  					margin-top: -250px;
+  
+  					@include respond-to(xl) {
+  						// height: 600px;
+  						margin-top: -300px;
+  					}  
+  				}
+				}
+
+				> .field-name-body { // indented because of the big image, just for projects.
+  				@include zen-respond-to-grid() { // above mobile
+  					@include zen-grid-item(7, 6);  //indent it a bit          
+  				}
+        }
+			}
+
+        /*
+        .field-name-field-features {
+          @include undo-zen-grid-item();
+          @include undo-zen-apply-gutter-padding()
+        }
+       */
+		  }
+
+      /*
+   		.group-content {
+  			.main-image {
+  				position: relative;
+  				text-align: center;
+  
+  				img {
+  					margin: {
+  						left: auto;
+  						right: auto;
+  					}
+  					max-width: 350px;
+  					width: 100%;
+  
+  					@include respond-to(m) {
+  						position: absolute;
+  						top: 0;
+  						right: 0;
+  						bottom: 0;
+  						left: 0;
+  					}
+  
+  					@include respond-to(l) {
+  						max-width: 360px;
+  					}
+  				}
+  			}
+  
+  			> .field-name-body {
+  	      // @include respond-to(l) {
+  	      //   min-height: 340px;
+  	      // }
+  
+  				p {
+  					line-height: 200%;
+            margin: {
+  		  		 top: 30px;
+             bottom: 0;
+  			    }
+         }
+  		}
+    } // end .group-content
+    */
+
+  .view-id-projects {
+  	&.teasers .views-row,
+  	&.teasers .node {
+  		&:hover:before {
+  			opacity: 0;
+  			animation: 225ms fadeout;
+  		}
+  
+  		&:hover:after {
+  			opacity: 1;
+  		}
+  
+  		&:after {
+  			opacity: 0;
+  		}
+  	}
+  
+  	.views-row {
+  		position: relative;
+  
+  		&:after {
+  			background: color('brand-primary-dark') url('../images-source/hot-sauce-splatter.png') no-repeat center center;
+  			content: '';
+  			position: absolute;
+  			top: 0;
+  			right: 0;
+  			bottom: 0;
+  			left: 0;
+  			transition: opacity 2s;
+  			z-index: -1;
+  		}
+  	}
+  }
+} // end node-project
+
+
+

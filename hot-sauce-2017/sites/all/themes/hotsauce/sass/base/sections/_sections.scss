@@ -1,0 +1,574 @@
+// Sections
+// ==========================================================================
+body {
+    background-color: color('grey-extra-light');
+    @include respond-to(bm) {
+        padding-bottom: 40px;
+    }
+    // Output a horizontal grid to help with debugging typography. The
+    // $typey-debug variable will toggle its output.
+    @include typey-debug-grid();
+    &.node-type-project {
+        background-color: #fff;
+    }
+    // Remove the margin in all browsers (opinionated).
+    margin: 0;
+    padding: 0;
+}
+
+.layout-swap__top {
+    height: 0 !important; // Zen sets the height via media queries
+}
+
+// Add the correct display in IE 9-.
+article,
+aside,
+footer,
+header,
+nav,
+section {
+    display: block;
+}
+
+// Headings
+//
+// All HTML headings, `<h1>` through `<h6>`, are available. `%h1` through `%h6`
+// classes are also available, for when you want to match the font styling of a
+// heading but still want your text to be displayed inline.
+//
+// Markup: headings-h.twig
+//
+// Style guide: base.headings
+// Correct the font size and margin on `h1` elements within `section` and
+// `article` contexts in Chrome, Firefox, and Safari.
+h1,
+h2,
+h3,
+h4 {
+    //fix this later
+    font-family: $montserrat;
+    color: color(grey-dark);
+}
+
+h1,
+h2 {
+    text-transform: uppercase;
+}
+
+h1,
+%h1 {
+    // Set the font-size and line-height while keeping a proper vertical rhythm.
+    @include type-layout(m, 1);
+    @include respond-to(m) {
+        @include type-layout(l, 1.25);
+    }
+    @include respond-to(l) {
+        @include type-layout(xl, 1.5);
+    }
+    @include respond-to(xl) {
+        @include type-layout(xxl, 2);
+    }
+    // Set 1 unit of vertical rhythm on the top and bottom margins.
+    @include margin-top(1, xxl);
+    @include margin-bottom(1, xxl);
+    text-align: center;
+    font-weight: 200;
+    strong {
+        font-weight: 600;
+    }
+}
+
+h2,
+%h2 {
+    @include type-layout(xl, 1.5);
+    //  @include margin-top(4, xl);
+    @include margin-top(1, xl);
+    @include margin-bottom(1, xl);
+}
+
+h3,
+%h3 {
+    @include type-layout(l, 1.25);
+    @include margin-top(1, l);
+    @include margin-bottom(1, l);
+}
+
+h4,
+%h4 {
+    @include type-layout(m, 1);
+    @include margin-top(1, m);
+    @include margin-bottom(1, m);
+}
+
+h5,
+%h5 {
+    @include type-layout(s, 1);
+    @include margin-top(1, s);
+    @include margin-bottom(1, s);
+    font-family: "Montserrat", Helvetica, Arial, "Nimbus Sans L", sans-serif;
+    font-weight: 200;
+}
+
+h6,
+%h6 {
+    @include type-layout(xs, 1);
+    @include margin-top(1, xs);
+    @include margin-bottom(1, xs);
+}
+
+// Hot Sauce adds
+header.header {
+    &:before {
+        background-color: #fff;
+        display: block;
+        height: 35px;
+        @include respond-to(m) {
+            height: 20px;
+        }
+    }
+    .region-header {
+        /*
+		@extend %layout-center;
+		$zen-columns: 12 !global; // later should refactor this to use the proper grid layouts
+*/
+        // make the container be the full width. This is such a mess. :)
+        .inner {
+            @include make-width-for-grid();
+            margin: 0 auto; // center it
+        }
+        position: relative;
+        &:before {
+            background-color: color('white');
+            content: '';
+            display: block;
+            height: 50%;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: -1;
+            @include respond-to(xl) {
+                height: 97px;
+            }
+            @include respond-to(xxxl) {
+                right: -5000%;
+                left: -5000%;
+            }
+        }
+        .inner {
+            &::before,
+            &::after {
+                height: 60px;
+                @include respond-to(m) {
+                    height: 97px;
+                }
+            }
+            &::before {
+                @include respond-to(xl) {
+                    content: none;
+                }
+            }
+        }
+        .block-logo-block {
+            @include zen-respond-to-grid($skip: (xl, xxl, xxxl)) {
+                @include zen-grid-item(4, 1);
+            }
+            @include zen-respond-to(xl) {
+                @include zen-grid-item(5, 1);
+            }
+            a {
+                display: inline-block;
+                img {
+                    max-width: 155px;
+                    position: relative;
+                    z-index: 500;
+                    @include respond-to(m) {
+                        max-width: 255px;
+                    }
+                    /*
+          @include respond-to(xl) {
+            max-width: 185px;
+          }
+*/
+                }
+            }
+        }
+        .navbar {
+            z-index: 10;
+            // MOBILE MENU
+            @include respond-to(bm) {
+                background: #fff;
+                border-top: 4px solid color('red');
+                box-sizing: content-box;
+                display: block;
+                height: 40px;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                width: 100%;
+                z-index: 1000;
+                .menu-name-main-menu,
+                .menu {
+                    height: 100%;
+                    margin: 0;
+                    padding: 0;
+                    width: 100%;
+                }
+                .menu {
+                    text-align: center;
+                    li {
+                        display: inline-block;
+                        float: none;
+                        margin: 0 0;
+                        padding: 0;
+                        @include respond-to(xxs) {
+                            margin: 0 15px;
+                        }
+                        &:first-of-type {
+                            margin-left: 0;
+                        }
+                        &:last-of-type {
+                            margin-right: 0;
+                        }
+                    }
+                }
+            }
+            // END MOBILE MENU
+            @include zen-respond-to-grid() {
+                position: relative;
+            }
+            @include respond-to(xl) {
+                height: 120px;
+            }
+        }
+        .block-ds-extras {
+            clear: both;
+            display: table;
+            height: 250px;
+            position: relative;
+            top: -25px;
+            width: 100%;
+            @include respond-to(m) {
+                height: 275px;
+            }
+            @include respond-to(xl) {
+                height: 350px;
+                top: -35px;
+            }
+            &:after {
+                background: transparent url('../images-source/header-bg-splatter.svg') repeat-x center top;
+                background-size: cover;
+                content: '';
+                display: block;
+                height: 100%;
+                margin: auto;
+                position: absolute;
+                top: 10px;
+                left: -15%;
+                right: -15%;
+                width: 130%;
+                @include respond-to(m) {
+                    background-size: contain;
+                }
+                @include respond-to(xxxl) {
+                    //  left: -5000%;
+                    //  right: -5000%;
+                    //  width: 10000%;
+                }
+            }
+        }
+        .field-name-title {
+            //		  @extend %layout-center;
+            display: table-cell;
+            position: relative;
+            vertical-align: middle;
+            width: 100%;
+            z-index: 1;
+            h1 {
+                @include border-header($border-color: white, $border-width: 175px, $border-position: -50px);
+                color: white;
+                margin: auto;
+                font-weight: bold;
+                /* Gc commented because these were messing up the header */
+                /*
+//        max-width: 320px;
+        @include respond-to(m) {
+          max-width: 430px;
+        }
+
+        @include respond-to(l) {
+          max-width: 815px;
+        }
+
+        @include respond-to(xl) {
+          max-width: 1190px;
+        }
+        */
+            }
+        }
+    }
+}
+
+.page-node-3 header.header .region-header {
+    &::before {
+        height: 100%;
+    }
+    .field-name-title {
+        // Make space for the copy below the header
+        @include respond-to(xl) {
+            position: relative;
+            top: 130px;
+            vertical-align: top;
+            z-index: 11;
+        }
+        h1 {
+            font-weight: 500;
+        }
+    }
+    .inner {
+        @include respond-to(xl) {
+            height: 380px;
+        }
+    }
+    .block-ds-extras {
+        height: 300px;
+        @include respond-to(m) {
+            height: 350px;
+        }
+        @include respond-to(xl) {
+            height: 500px;
+        }
+        &::after {
+            @include respond-to(xl) {
+                height: 110%;
+                z-index: 10;
+            }
+        }
+    }
+}
+
+main {
+    @extend %layout-center;
+    @extend %clearfix;
+    @include respond-to(bm) {
+        padding: $zen-gutters;
+    }
+    // max-width: none;
+    h2 {
+        @include border-header($border-color: color('brand-primary'), $border-width: 75px, $border-position: -50px, $border-align: left);
+    }
+    h3 {
+        //	  @include border-header($border-color: color('brand-primary'), $border-width: 75px, $border-position: -50px, $border-align: left);
+    }
+    // quick hack for mobile
+    //		padding: 0 20px;
+}
+
+p,
+.field li {
+    color: color('grey-dark');
+    font-size: 18px;
+}
+
+.region-content-bottom {
+    background-color: color('brand-primary');
+    clear: both;
+    .webform-client-form {
+        >div {
+            padding: {
+                top: 60px;
+                bottom: 100px;
+            }
+            // Get rid of the margin on the header and the button
+            >.form-item {
+                &:first-of-type {
+                    margin-top: 0;
+                }
+                &:last-of-type {
+                    margin-bottom: 0;
+                }
+            }
+        }
+        h3 {
+            @include border-header($border-color: color('white'), $border-width: 75px, $border-position: -50px, $border-align: left);
+            margin-top: 30px;
+        }
+        // Submit button
+        .form-actions {
+            padding-top: 40px;
+        }
+        // Prevent inputs from spilling in Firefox
+        .webform-component-fieldset {
+            input,
+            textarea {
+                width: 100%;
+            }
+        }
+    }
+    h2 {
+        @extend %reversed-header;
+    }
+    >.inner>div {
+        @extend %layout-center;
+        //  	    @include padding(.5 0);
+        padding-bottom: 30px;
+    }
+    // override for map
+    .page-node-31 &>.inner>div#block-nodeblock-32 {
+        // the map
+        padding-top: 0 !important;
+    }
+    >.inner>div.block-webform,
+    .page-node-31 &>.inner>div#block-nodeblock-32 // the map {
+    {
+        @extend %undo-layout-center;
+        /*
+		@include undo-zen-grid-container();
+		max-width: none !important;
+		padding-left: 0 !important;
+		padding-right: 0 !important;
+    */
+        @include respond-to(bm) {
+            padding: $zen-gutters !important;
+        }
+        background-color: color('brand-quaternary');
+        .messages {
+            @extend %layout-center;
+            @include zen-apply-gutter-padding();
+        }
+        form {
+            @extend %layout-center;
+            $zen-columns: 2 !global;
+            //			$zen-gutters: 0 !global;
+            @include zen-grid-container($context: grid-item);
+            //			@include zen-grid-background();
+            h3 {
+                @extend %reversed-header;
+                margin: 0;
+            }
+            fieldset {
+                //		    @include zen-apply-gutter-padding();
+                padding: 0;
+                border: 0;
+                min-width: 0; // turn off browser default
+            }
+            @include respond-to(m) {
+                .webform-component--group-1 {
+                    @include zen-grid-item(1,
+                    1);
+                    //					@include padding(0 1 0 0);
+                }
+                .webform-component--group-2 {
+                    //					@include padding(0 0 0 0);
+                    @include zen-grid-item(1,
+                    2);
+                    @include zen-apply-gutter-padding();
+                }
+            }
+            .form-actions {
+                clear: both;
+                text-align: center;
+            }
+            label {
+                @include font-size(s);
+                color: white;
+                font-weight: 100;
+            }
+            input:focus::-webkit-input-placeholder,
+            textarea:focus::-webkit-input-placeholder,
+            input:focus:-moz-placeholder,
+            textarea:focus:-moz-placeholder,
+            input:focus::-moz-placeholder,
+            textarea:focus::-moz-placeholder,
+            input:focus:-ms-input-placeholder,
+            textarea:focus:-ms-input-placeholder {
+                color: transparent;
+            }
+            input,
+            textarea {
+                background: transparent;
+                color: white;
+                padding: 3px 15px;
+                border: 1px solid color('grey-extra-light');
+            }
+            textarea {
+                @include respond-to(m) {
+                    height: 277.5px;
+                }
+            }
+            .webform-component--group-1--first-name,
+            .webform-component-textarea {
+                margin-top: 0;
+            }
+            .webform-component-textarea {
+                margin-bottom: 0;
+            }
+            .webform-submit {
+                @extend %button;
+                &[disabled][type='submit']:hover {
+                    color: #fff;
+                }
+            }
+            /* Just leave it, it looks better
+			.js & label {
+				visibility: hidden;
+				animation: 225ms fadeout;
+			}
+
+			.js & div.focus label {
+				visibility: visible;
+				animation: 225ms fadein;
+			}
+
+			*/
+        }
+    }
+}
+
+footer.region-footer {
+    @include padding(1 0);
+    background-color: black;
+    text-align: center;
+    font-family: $montserrat;
+    font-weight: 200;
+    text-transform: uppercase;
+    p {
+        color: color('text-bg');
+        margin: 0;
+        &.terms-etc {
+            @include type-layout(s,
+            1);
+        }
+    }
+    >div {
+        color: color('text-bg');
+        @extend %layout-center;
+        @include respond-to(m) {
+            text-align: left;
+        }
+    }
+}
+
+.region-navigation {
+    @include undo-zen-grid-container();
+}
+
+@keyframes wave {
+    0% {
+        margin-left: 0;
+    }
+    100% {
+        margin-left: -1600px;
+    }
+}
+
+@keyframes swell {
+    0%,
+    100% {
+        //    transform: translate3d(0,-25px,0);
+    }
+    50% {
+        //    transform: translate3d(0,5px,0);
+    }
+}

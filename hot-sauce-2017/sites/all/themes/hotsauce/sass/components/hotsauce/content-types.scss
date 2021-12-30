@@ -1,0 +1,17 @@
+
+// Generics //
+.field-name-body p {
+	clear: both;
+	max-width: 850px; // to maintain legibility
+}
+
+.node-type-project.with-half-header,
+.node-type-capability.with-half-header {
+	@include half-header();
+}
+
+// End Generics //
+
+@import "content-types/project";
+@import "content-types/testimonial";
+@import "content-types/capability";

@@ -1,0 +1,25 @@
+{
+  "name": "Hot-Sauce",
+  "description": "Official Hot Sauce theme for the Hot Sauce website",
+  "main": "",
+  "authors": [
+    "George Carless <George@hotsauceatl.com>",
+    "Alexander Rhett Crammer <Alexander@hotsauceatl.com>"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "libraries",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "hover": "^2.1.1",
+    "font-awesome": "fontawesome#^4.7.0",
+    "jquery.scrollTo": "^2.1.2"
+  }
+}

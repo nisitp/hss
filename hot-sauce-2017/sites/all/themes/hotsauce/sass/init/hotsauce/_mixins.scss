@@ -1,0 +1,293 @@
+@mixin centerer($horizontal: true, $vertical: true) {
+  position: absolute;
+  @if ($horizontal and $vertical) {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  } @else if ($horizontal) {
+    left: 50%;
+    transform: translate(-50%, 0);
+  } @else if ($vertical) {
+    top: 50%;
+    transform: translate(0, -50%);
+  }
+}
+
+
+@mixin make-width-for-grid($skip: ()) {  
+  @each $layoutname, $layout in $zen-layouts {
+    @if (index($skip, $layoutname) == null) {
+      @include set-max-width($layoutname);      
+    }
+  }
+}
+
+@mixin set-max-width($name) {
+  $params: map_get($zen-layouts, $name);
+  $width: map_get($params, grid-width);
+  @include respond-to($name) {
+    max-width: $width;
+    @debug "Setting max width for " + $name + " to " + $width;
+    margin:0 auto;
+  }
+}
+
+@mixin column-view($n: 3, $modifier: 1, $parent: '.view-content', $child: '.views-row', $debug: false) {
+	/* modifier allows to set n number of columns but modify for a larger grid, to facilitate alignment to
+	   parent grids. e.g. using n=3 and modifier=4 will work well for aligning to a 12 column grid (3x4 = 12)
+	*/
+	
+	$zen-columns: $n * $modifier !global;
+
+	#{$parent} {
+  	@if ($debug == true) { @debug $zen-gutters; }
+		@include zen-grid-container($context: flow, $gutters: $zen-gutters);
+
+
+		& > #{$child} {
+			$start: 1 * $modifier;
+			@include zen-grid-item($start, 1);
+//			@include zen-apply-gutter-padding();
+			margin-bottom: $zen-gutters;
+		}
+
+		& > .views-row-1,
+		& > #{$child}:nth-child(#{$n}n+1) {
+			@include zen-new-row(both);
+			$count: 1 * $modifier;
+			@include zen-grid-item(1 * $modifier, 1);
+		}
+
+		@for $i from 2 through $n {
+			& > #{$child}:nth-child(#{$n}n+#{$i}) {
+				$count: 1 * $modifier;
+				$start: ($i * $modifier) - ($modifier - 1);
+				@include zen-new-row(none);
+				@include zen-grid-item($count, $start);
+			}
+		}
+	}
+}
+
+@mixin border-header($border-color: white, $border-width: 175px, $border-position: -50px, $border-align: center) {
+  // Disabled :/
+  // &:before {
+  // 	content: ' ';
+  // 	width: $border-width; // handle resizing w/ js?
+  // 	height: .25em;
+  // 	background: $border-color;
+  // 	display: block;
+  // 	$margins: 0;
+  //
+  //   @if $border-align == center {
+  //     $margins: 0 auto -20px auto;
+  //   }
+  //   @else {
+  //     // $margins: 0 0 -20px 0;
+  //     $margins: 60px 0 -20px 0;
+  //   }
+  //
+  // 	margin: $margins;
+  // 	position: relative;
+  // 	top: -30px;
+  // }
+}
+
+%reversed-header {
+	color: white;
+	text-transform: uppercase;
+}
+
+%vertical-centered {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+%button {
+  @include grow;
+	background: color('brand-primary');
+	border: 2px solid white;
+	padding: 5px 50px;
+	text-transform: uppercase;
+  transition: background-color 125ms, transform 300ms;
+
+  &:hover, &:focus {
+		background: lighten(color('brand-primary'), 5%);
+	}
+
+  &:focus {
+    transform: scale(1);
+  }
+
+  &:active {
+		background: darken(color('brand-primary-dark'), 5%);
+    transform: scale(1);
+	}
+}
+
+%phone {
+		color: color('brand-primary');
+    text-decoration: none;
+
+		&:hover {
+		  color: color('brand-primary-dark');
+		}
+}
+
+%icon {
+  font-family: FontAwesome;
+}
+
+%fake-fullwidth {
+  clear: both;
+  margin-left: -1000% !important;
+  padding-left: 1000% !important;
+  margin-right: -1000% !important;
+  padding-right: 1000% !important ;
+}
+
+%undo-layout-center {
+  max-width: none !important;
+  @include undo-zen-grid-item();
+  @include undo-zen-apply-gutter-padding()
+	@include undo-zen-grid-container();
+	margin: auto;
+	max-width: none !important;
+	padding-left: 0 !important;
+	padding-right: 0 !important;
+}
+
+%centered-body {
+  text-align: center;
+  
+ 	@include zen-new-row();
+
+}
+
+@mixin zen-respond-to-grid($skip: (), $bg: false) {
+  /* Note from George: this mixin basically makes sure that the correct zen grid is set for all breakpoints (minus any passed in skip).
+     This expands what zen does on its own by making it easier to ensure that the correct gutters are applied in cases where different breaks use
+     different gutter/column widths.
+  */
+  
+  @global $debug;
+  @each $layoutname, $layout in $zen-layouts {
+//    @debug "Looking for " + $layoutname + " in " + $skip;
+//    @debug index($skip, $layoutname) ;
+    @if (index($skip, $layoutname) == null) {
+      @include zen-respond-to($layoutname) {
+        max-width: map_get($layout, grid-width);
+        @if ($bg == true or $debug == true) {
+          @include zen-grid-background();
+        }
+
+        @content;
+      }
+    }
+  } 
+//    @content;
+  /*
+  @each $bp in $list {
+//    @debug "responding to " + $bp;
+    @include zen-respond-to($bp) {
+      @content;
+    }
+  }
+  */
+}
+
+// all a bit hacky right now.
+@function _buildImage($i, $width, $height) {
+  $i: '<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="#{$width}" height="#{$height}">#{$i}</svg>';
+  @return $i;
+}
+
+@function hsImage($image-name, $color, $width, $height){
+  $images: (
+    curvy-header: '<style type="text/css">.st0{fill:#{$color};}</style><path id="XMLID_20_" class="st0" d="M1149,0c-221.8,0-240.8,40-500.6,40C270.8,40.1,332.7,0-1,0v46h1152V0H1149z"/>',
+  );
+
+  $image: _buildImage(map-get($images, $image-name), $width, $height);
+  @return url('data:image/svg+xml;utf8,#{$image}');
+}
+
+
+%curvy-top {
+  margin-top: 40px;
+  position: relative;
+  top: -40px;
+
+  // expand in future?
+  &:before {
+    content: ' ';
+    background: transparent hsImage(curvy-header, color('brand-primary'), 1150, 60) repeat-x center center;
+    display: block;
+    width: 100%;
+    height: 60px;
+    position: relative;
+    top: -40px;
+  }
+}
+
+
+@mixin curvy-section($section-identifier) {
+  & #{$section-identifier} {
+    @extend %curvy-top;
+  }
+}
+
+@mixin full-width-background-color($color) {
+  background-color: $color;
+  position: relative;
+
+  &::before,
+  &::after {
+    background-color: $color;
+    content: '';
+    height: 100%;
+    position: absolute;
+    top: 0;
+    width: 10000px;
+  }
+
+  &::before {
+    left: -10000px;
+  }
+
+  &::after {
+    right: -10000px;
+  }
+}
+
+@mixin half-header() {
+  header.header .region-header {
+      .field-name-title {
+        h1 {
+          @include zen-respond-to-grid() {
+            @include zen-grid-item(7, 6);
+            text-align: left;
+//          float: right;
+          }
+        }
+      }
+    }
+}
+
+
+@mixin splatter-overlay($number: 1, $color: color('grey-extra-light'), $use_vectors: true) {
+  @if $use_vectors {
+    background-image: url(map-get((
+      // `../images-source/Splatter_1.svg`
+      1: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwMCA0MDQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDEwMDAgNDA0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0YyRjJGMzt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMCwwdjE5LjhWMjB2MzY0djIwaDEwMDB2LTIwVjIwdi0wLjJWMEgweiBNNjEwLjcsNjUuNmMwLjMtOC40LDIuMi0xNiw4LjUtMjAuOWM2LjQtNSwyMy4yLTguNSwyNS43LDdjMS45LDEyLjEtOS40LDEwLjMtMTUuNiwxMy42Yy00LjMsMi4zLTEyLjYsMTUuNi0xNy4xLDguMUM2MTEuMiw3MS43LDYxMC43LDY3LjUsNjEwLjcsNjUuNnogTTM5Niw0My4zYzEuOS02LjMsNS4yLTguOCwxMS4xLTguOGM1LDAsMy40LTMuNSw3LjEtNS43YzguNi01LDIxLjcsMy41LDI2LjgsMTEuOGM1LjYsOS4xLDEuNiwyMC40LTcuMiwyNS43Yy02LjcsNC0xNS44LDQuNi0yMy4yLDJDNDAwLjYsNjQuOCwzOTIuNyw1NC4zLDM5Niw0My4zeiBNMzQxLjksNTQuNWMxLjEtMy40LDMuNi02LjIsNy4xLTdjNC40LTAuOSw5LDAuOCwxMS42LDQuNWMxLjcsMi43LDIuMSw2LDEuMSw5LjFjLTAuOSwzLjUtMy41LDYuNC02LjksNy41QzM1MC42LDY5LjksMzM3LjksNjYuOSwzNDEuOSw1NC41eiBNMjU3LjQsMTcyLjhjMC42LTMuMiwyLjMtNi4xLDUtOC43YzMuMS0yLjksNy40LTQuMSwxMS41LTMuNWM1LjMsMS4yLDEwLjIsNC4yLDExLjksOS45YzAuNywyLjQsMi40LDguNCwzLjgsMTAuNmMzLDQuNiw4LDYuMiwxMSwxMC4zYzEuOSwyLjYsMi45LDYuOSwyLjksMTEuNmMtMC40LDYuNy0yLjYsMTQuNS02LjQsMTkuNWMtMy40LDQuMi05LjcsNy4xLTE1LjUsNi4xYy01LjQtMC45LTguOS00LjQtMTEuNC05LjRjLTAuNy0xLjYtMS4xLTMuNC0xLjEtNS4ydi00YzAtNS42LTEtMTIuNi01LjItMTcuNmMtMy43LTUuMS01LjgtOS43LTYuNS0xMy44TDI1Ny40LDE3Mi44TDI1Ny40LDE3Mi44eiBNNDcyLjMsMzg0Yy0xMi41LTAuMS0yNC41LTMuMS0zNC41LTkuNWMtOC43LTUuNS0yNi43LTI3LjctMzAuMS0zMS4xYy02LjUtNi40LTE1LjctOS4zLTI0LjctNy45Yy0yLjcsMC40LTI3LjgsNi4zLTQ0LjUtMS4zYy0xOS04LjctMjkuOS0yOS41LTI4LjYtNDUuNmMxLjMtMTYuMiwxMi41LTQxLDEzLjctNTZjMS4xLTE1LTEuMi0zMS43LTguMi00Ni4xcy0xNy4xLTIxLjYtMjQuOS0zMC40Yy0xMi0xMy4xLTEyLjctMzMuMi0zLTQ5LjFzMjYuOC0yNi4zLDQ1LjMtMjQuN2MyMi40LDEuNyw0Mi42LDcuOSw2Ni4yLDUuNWMyNi41LTIuNiw0My41LTEzLjgsNTQuMS0yMy4yYzEwLjYtOS40LDIwLjgtMjMuMiwzMi45LTMxLjZjMTAuOC03LjUsMjMuOC0xMi4xLDM3LTEzaDkuMWM1LjYsMC40LDExLjIsMS41LDE2LjYsMy40YzIyLjIsNy45LDM0LjcsMjcuNywzNS45LDUwYzEsMjIuNSwyMi4zLDI3LjcsMzYuMiwyMS4yYzEyLTcuNCwyMS4xLTE4LjYsMzcuMS0xOS4xYzExLjktMC40LDIyLjUsNy40LDM0LjgsOS4zYzEwLjcsMS43LDI5LjUsMS41LDM5LjEsOC4xYzYuNiw0LjUsOS45LDEwLjMsMTAuOCwxNS44djUuOWMtMS43LDkuNy0xMS42LDE1LjgtMjQuOCw2LjJjLTEzLjMtOS44LTE3LTIxLjEtMzQuNy0yMi42Yy03LjYtMC42LTE2LjIsMS41LTIxLjcsNi40Yy05LjUsOC42LTExLjMsMTguOC0xMi45LDI3LjFjLTQuMiwyMi4yLDYuMyw0NS42LDcuNCw1MWM4LjEsNDEuNC0xMCw2OS4xLTE2LjMsNzguMmMtMTIsMTcuMy00OC44LDI1LjctNjMuMSwzOC4yYy0xNi44LDE0LjYtMjcuOCw0Mi40LTMwLjEsNDZjLTE1LjksMjQuNy00NS45LDM5LjEtNzMuNSwzOS4xaC0wLjZWMzg0eiBNNjA5LjYsMzA0LjJjMy4xLTcuNCwxMC45LTExLjcsMTguMi0xMC42YzUuOCwwLjksMTIuNyw1LjcsMTUuMywxMS44YzMuMiw3LjcsMy42LDE3LjktMi42LDIyLjhjLTkuNiw3LjYtMTkuOSw4LjItMjUuNCw4LjNjLTYuNSwwLjEtMTIuMS01LjYtMTIuMS0xMmMwLTUuOSw1LjItNi40LDYuMy04LjZDNjEwLjgsMzEzLjIsNjA3LjEsMzA5LjgsNjA5LjYsMzA0LjJ6Ii8+PC9zdmc+',
+
+      // `../images-source/Splatter_2.svg`
+      2: 'data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz48c3ZnIHZlcnNpb249IjEuMSIgaWQ9IkxheWVyXzEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHg9IjBweCIgeT0iMHB4IiB2aWV3Qm94PSIwIDAgMTAwMCA0MDQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDEwMDAgNDA0OyIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSI+PHN0eWxlIHR5cGU9InRleHQvY3NzIj4uc3Qwe2ZpbGw6I0YyRjJGMzt9PC9zdHlsZT48cGF0aCBjbGFzcz0ic3QwIiBkPSJNMTAwMCw0MDR2LTE5LjhWMzg0VjIwVjBIMHYyMHYzNjR2MC4yVjQwNEgxMDAweiBNMzg5LjIsMzM4LjRjLTAuMyw4LjQtMi4xLDE1LjktOC41LDIwLjlzLTIzLjIsOC40LTI1LjctN2MtMS45LTEyLjEsOS40LTEwLjMsMTUuNi0xMy42YzQuMy0yLjMsMTIuNi0xNS42LDE3LjEtOC4xQzM4OC44LDMzMi4zLDM4OS4zLDMzNi41LDM4OS4yLDMzOC40eiBNNjAzLjksMzYwLjdjLTEuOSw2LjMtNS4zLDguOC0xMS4xLDguOGMtNSwwLTMuNCwzLjUtNy4xLDUuN2MtOC41LDUtMjEuNi0zLjQtMjYuOC0xMS44Yy01LjYtOS4xLTEuNS0yMC40LDcuMi0yNS43YzYuOC00LjEsMTUuOC00LjYsMjMuMi0yQzU5OS40LDMzOS4yLDYwNy4zLDM0OS43LDYwMy45LDM2MC43eiBNNjU4LjEsMzQ5LjZjLTEuMSwzLjQtMy42LDYuMy03LjEsN2MtNC40LDAuOS05LTAuOC0xMS42LTQuNWMtMS43LTIuNy0yLjEtNi4xLTEuMS05LjFjMC44LTMuNSwzLjQtNi4zLDYuOS03LjVDNjQ5LjQsMzM0LjEsNjYyLjEsMzM3LjEsNjU4LjEsMzQ5LjZ6IE03NDIuNiwyMzEuMWMtMC43LDMuMi0yLjMsNi4xLTUsOC43Yy0zLjEsMi45LTcuMyw0LjItMTEuNSwzLjVjLTUuMy0xLjItMTAuMS00LjItMTEuOS05LjljLTAuNi0yLjMtMi40LTguNC0zLjgtMTAuNmMtMy00LjYtOC02LjItMTEtMTAuM2MtMS45LTIuNi0yLjktNi45LTIuOS0xMS42YzAuNC02LjcsMi42LTE0LjUsNi40LTE5LjVjMy40LTQuMiw5LjctNy4xLDE1LjUtNi4xYzUuNCwwLjksOC45LDQuNCwxMS40LDkuNGMwLjcsMS42LDEuMSwzLjQsMS4xLDUuMnY0YzAsNS42LDEuMSwxMi43LDUuMiwxNy42YzMuNiw1LjEsNS44LDkuNyw2LjUsMTMuOFYyMzEuMXogTTUyNywyMC4yaDAuN2MxMi41LDAuMSwyNC41LDMuMSwzNC41LDkuNWM4LjcsNS42LDI2LjcsMjcuNywzMC4xLDMxLjFjNi41LDYuNCwxNS43LDkuMywyNC43LDcuOWMyLjctMC40LDI3LjgtNi4zLDQ0LjUsMS4zYzE4LjksOC43LDI5LjksMjkuNCwyOC42LDQ1LjZjLTEuNCwxNi4yLTEyLjYsNDEtMTMuNyw1NmMtMS4xLDE0LjksMS4yLDMxLjYsOC4yLDQ2LjFzMTcuMSwyMS42LDI0LjksMzAuNGMxMiwxMy4xLDEyLjcsMzMuMiwzLDQ5LjFzLTI2LjgsMjYuMy00NS4zLDI0LjdjLTIyLjQtMS43LTQyLjUtNy44LTY2LjItNS41Yy0yNi41LDIuNi00My42LDEzLjgtNTQuMSwyMy4ycy0yMC44LDIzLjItMzIuOSwzMS42Yy0xMC45LDcuNS0yMy45LDEyLjEtMzcuMSwxM2gtOS4xYy01LjYtMC40LTExLjItMS41LTE2LjYtMy40Yy0yMi4yLTgtMzQuNi0yNy44LTM1LjktNTBjLTEtMjIuNS0yMi4zLTI3LjgtMzYuMi0yMS4yYy0xMiw3LjMtMjEuMSwxOC41LTM3LjEsMTkuMWMtMTEuOSwwLjQtMjIuNS03LjQtMzQuOC05LjNjLTEwLjctMS43LTI5LjUtMS41LTM5LjEtOC4xYy02LjYtNC41LTkuOS0xMC4zLTEwLjgtMTUuOHYtNS45YzEuNy05LjcsMTEuNi0xNS44LDI0LjgtNi4yYzEzLjMsOS44LDE3LDIxLjIsMzQuNywyMi42YzcuNiwwLjYsMTYuMy0xLjUsMjEuNy02LjRjOS41LTguNiwxMS40LTE4LjgsMTIuOS0yNy4xYzQuMi0yMi4yLTYuNC00NS42LTcuNC01MWMtOC00MS40LDEwLTY5LjEsMTYuMy03OC4yYzEyLTE3LjQsNDguOC0yNS44LDYzLjEtMzguMmMxNi44LTE0LjcsMjcuOC00Mi40LDMwLjEtNDZjMTUuOS0yNC43LDQ1LjgtMzksNzMuNS0zOS4xVjIwLjJ6IE0zOTAuNCw5OS44Yy0zLjIsNy4zLTEwLjksMTEuNy0xOC4yLDEwLjZjLTUuNy0wLjktMTIuNi01LjctMTUuMy0xMS44Yy0zLjItNy44LTMuNi0xNy45LDIuNi0yMi44YzkuNi03LjYsMTkuOS04LjIsMjUuNC04LjNjNi42LTAuMiwxMi4xLDUuNiwxMi4xLDEyYzAsNS45LTUuMSw2LjQtNi4zLDguNkMzODkuMiw5MC44LDM5Mi45LDk0LjIsMzkwLjQsOTkuOHoiLz48L3N2Zz4=',
+    ), $number));
+  } @else {
+    background-image: url(map-get((
+      1: '../images-source/Splatter_1.png',
+      2: '../images-source/Splatter_2.png'
+    ), $number));
+  }
+}

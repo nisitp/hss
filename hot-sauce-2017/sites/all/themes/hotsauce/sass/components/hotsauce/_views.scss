@@ -1,0 +1,856 @@
+%view-centered {
+    .views-row {
+        text-align: center;
+    }
+}
+
+div.form-type-bef-link {
+    float: left;
+    margin-right: 1em;
+    text-transform: uppercase;
+    a {
+        font-family: $montserrat;
+        font-weight: 200;
+        color: color(brand-primary);
+        text-decoration: none;
+        &:hover,
+        &.active {
+            font-weight: 400;
+        }
+        &:hover {
+            color: color(brand-secondary);
+        }
+    }
+}
+
+.view-capabilities,
+.view-people.view-display-id-block {
+    .views-row {
+        text-align: left;
+    }
+    h2 {
+        // Break the names into two lines
+        width: 100px;
+    }
+}
+
+.view-capabilities {
+    @include zen-respond-to-grid() {
+        @include column-view(4, $parent: '.slick__slider', $child: '.slide');
+    }
+    &:hover {
+        @include zen-respond-to(m) {
+            .views-row:not(:hover),
+            .slide:not(:hover) {
+                opacity: 0.35;
+            }
+        }
+    }
+    .slick__arrow {
+        display: none;
+    }
+    .views-row,
+    .slide {
+        background-color: color('grey-extra-light');
+        text-align: center;
+        transition: transform 300ms, opacity 300ms;
+        &:hover {
+            @include respond-to(m) {
+                position: relative;
+                box-sizing: border-box;
+                h3,
+                .field-name-body {
+                    transform: scale(1.05);
+                }
+                z-index: 1;
+            }
+        }
+        h3 {
+            margin: 15px 0;
+            text-transform: uppercase;
+            @include breakpoint($m $l) {
+                font-size: 1rem;
+                line-height: 1.5rem;
+                margin-bottom: 15px;
+            }
+        }
+        .field-name-field-image {
+            font-size: 0;
+            line-height: normal;
+            margin-bottom: 30px;
+            overflow: hidden;
+            position: relative;
+            @include respond-to(bm) {
+                margin: auto;
+                max-width: 250px;
+            }
+            &::after {
+                background: {
+                    position: top center;
+                    repeat: no-repeat;
+                    size: cover;
+                }
+                content: '';
+                display: block;
+                position: absolute;
+                top: -5px;
+                right: -5px;
+                bottom: -5px;
+                left: -5px;
+            }
+            >div {
+                background: {
+                    position: center center;
+                    repeat: no-repeat;
+                    size: cover;
+                }
+                height: 180px;
+                transition: transform 1s cubic-bezier(0, 0, 0.25, 1.00);
+            }
+        }
+        &:hover .field-name-field-image>div {
+            transform: scale(1.25);
+        }
+        &:nth-of-type(2n+1) .field-name-field-image::after {
+            @include splatter-overlay();
+        }
+        &:nth-of-type(2n+2) .field-name-field-image::after {
+            @include splatter-overlay(2);
+        }
+    }
+}
+
+.front .view-capabilities,
+.page-node-38 .view-capabilities {
+    // on the homepage and capabilities page, it shows 4
+    @include respond-to(m) {
+        @include column-view(2);
+    }
+    @include respond-to(l) {
+        @include column-view(4);
+    }
+}
+
+.view-people.headshot-and-quick-bio-block {
+    @include respond-to(l) {
+        //		@include column-view(2);
+        //		margin-top: 30px;
+    }
+    // &.view-people {
+    // 	position: relative;
+    // 	@extend %clearfix;
+    // 	$zen-columns: 12 !global;
+    // 	@include zen-grid-item(4, 1);
+    // 	@include respond-to(xxl) {
+    // 		@include zen-grid-item(3, 1);
+    // 	}
+    // 	@include column-view(3);
+    // }
+    .view-content {
+        //		max-width: 400px;
+        @include respond-to(bm) {
+            margin: auto;
+        }
+        @include respond-to(m) {
+            //			max-width: none;
+            //			width: 43%;
+        }
+        @include respond-to(l) {
+            //			width: 60%;
+        }
+    }
+    .contextual-links-region {
+        position: static;
+    }
+    position:relative;
+    .views-row {
+        margin: auto;
+        // margin-bottom: 30px;
+        position: relative;
+        @include respond-to(m) {
+            margin: 0;
+        }
+        @include respond-to(l) {
+            margin-top: 0;
+            height: auto;
+            padding-bottom: 0;
+        }
+        @include respond-to(xl) {
+            min-height: 600px;
+        }
+        &:nth-of-type(3n+1) .group-person-brief {
+            background-color: color('brand-primary');
+        }
+        &:nth-of-type(3n+2) .group-person-brief {
+            background-color: color('brand-secondary');
+        }
+        &:nth-of-type(3n+3) .group-person-brief {
+            background-color: color('brand-tertiary');
+        }
+        .close {
+            @include fa-icon();
+            @extend .fa-window-close;
+            &:before {
+                position: absolute;
+                width: 20px;
+                height: 20px;
+                top: 0;
+                right: 0;
+                font-size: 50px;
+                color: red;
+            }
+            visibility: hidden;
+        }
+        &.revealed {
+            @extend %clearfix;
+            position: absolute;
+            margin: 0 !important;
+            left: 0;
+            width: 100% !important;
+            z-index: 999;
+            background: white;
+            .close {
+                visibility: visible;
+            }
+            .group-overview {
+                @include zen-respond-to-grid() {
+                    @include zen-grid-item(6, 1);
+                }
+            }
+            .group-detail {
+                display: block;
+                @include zen-respond-to-grid() {
+                    @include zen-grid-item(6, 7);
+                }
+            }
+            .group-person-role-container .field-group-format-wrapper::after {
+                background-color: color('grey-extra-light');
+                content: '';
+                display: block;
+                height: 25px;
+                margin: auto;
+                position: absolute;
+                right: 0;
+                bottom: -21px;
+                left: 0;
+                transform: rotate(45deg);
+                width: 25px;
+                @include respond-to(m) {
+                    //					display: none;
+                }
+            }
+            .group-person-biography-container {
+                display: block;
+            }
+        }
+    }
+    // .field-group-format-wrapper {
+    // 	@include respond-to(l) {
+    // 		position: absolute;
+    // 		top: 0;
+    // 		right: 0;
+    // 		bottom: 0;
+    // 		left: 0;
+    // 	}
+    // }
+    .group-person-role-container {
+        height: 0;
+        padding-bottom: 100%;
+        position: relative;
+        h3 {
+            margin: 0;
+        }
+    }
+    .headshot {
+        background: {
+            size: cover;
+            repeat: no-repeat;
+            position: center center;
+        }
+        padding-bottom: 80%;
+        width: 100%;
+        @include respond-to(l) {
+            padding-bottom: 70%;
+        }
+    }
+    .field-name-title h3,
+    .role-name {
+        color: color('white');
+        font-family: $montserrat;
+        line-height: normal;
+        margin: 0;
+        padding: {
+            left: 20px;
+            right: 20px;
+        }
+        text-transform: uppercase;
+        @include breakpoint($l $xl) {
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+    }
+    .field-name-title h3 {
+        font-size: 24px;
+        padding-top: 20px;
+    }
+    .role-name {
+        font: {
+            size: 16px;
+            weight: 500;
+        }
+        padding-bottom: 20px;
+    }
+    .group-person-biography-container {
+        display: none;
+        margin-top: 30px;
+        @include respond-to(m) {
+            display: none !important; // Since jQuery applies styles inline
+            // position: absolute;
+            // top: 0;
+            // right: 0;
+        }
+    }
+}
+
+// Opened Person Biography
+.page-node-14 {
+    .paragraphs-items {
+        position: relative;
+    }
+    .paragraphs-item-11 {
+        background-color: #e6e6e6;
+        //		display: none;
+        /*
+		padding: {
+			left: 20px;
+			right: 20px;
+		}
+		position: absolute;
+		top: 0;
+		right: 20px;
+		width: 45%;
+    */
+        @include respond-to(bm) {
+            //			display: none;
+        }
+        $zen-columns: 12 !global;
+        @include zen-respond-to-grid() {
+            @include zen-grid-item(8, 5);
+            // width: 51%;
+        }
+        @include respond-to(xxl) {
+            @include zen-grid-item(7, 4);
+        }
+        &.revealed {
+            @include respond-to(m) {
+                display: block;
+            }
+        }
+        .field-name-title h2 {
+            margin: 0;
+            &::before {
+                margin-top: 35px;
+            }
+        }
+    }
+    .paragraphs-item-49 {
+        clear: both;
+        overflow: auto;
+        padding-bottom: 10px;
+        @include respond-to(m) {
+            //			@include zen-grid-item(1.5, 1);
+            float: none;
+            margin: auto;
+        }
+        h2 {
+            margin-bottom: 0;
+        }
+        h3,
+        p {
+            margin: 10px 0;
+        }
+        h3 {
+            color: color('red');
+            font: {
+                size: 30px;
+                weight: 500;
+            }
+        }
+        p {
+            color: color('grey-dark');
+            font-size: 18px;
+        }
+        .building-images {
+            overflow: auto;
+            div {
+                background: {
+                    clip: content-box;
+                    position: center center;
+                    repeat: no-repeat;
+                    size: cover;
+                }
+                height: 350px;
+                overflow: auto;
+                padding: 15px 0;
+                @include respond-to(m) {
+                    float: right;
+                    padding: 15px;
+                    width: 50%;
+                }
+                &:nth-of-type(1) {
+                    @include respond-to(m) {
+                        height: 540px;
+                        float: left;
+                    }
+                }
+                &:nth-of-type(2) {
+                    @include respond-to(m) {
+                        height: 215px;
+                    }
+                }
+                &:nth-of-type(3) {
+                    @include respond-to(m) {
+                        height: 325px;
+                    }
+                }
+            }
+        }
+    }
+    .region-content-bottom {
+        background-color: color('grey-dark');
+        &::before {
+            background: {
+                image: url('/sites/all/themes/hotsauce/images-source/Staircase.jpg');
+                position: center center;
+                repeat: no-repeat;
+                size: cover;
+            }
+            content: '';
+            display: block;
+            height: 250px;
+            opacity: 0.83;
+            @include respond-to(m) {
+                height: 450px;
+            }
+            @include respond-to(xl) {
+                background-position-y: 35%;
+            }
+            @include breakpoint(xxl) {
+                // It looks pretty rough by this breakpoint so forget it
+                content: none;
+            }
+        }
+    }
+}
+
+.view-people.view-display-id-block .group-person-biography-container,
+.page-node-14 .paragraphs-item-11 {
+    background-color: #e6e6e6;
+    padding: 20px;
+    h3 {
+        margin: 0;
+    }
+    p {
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    p {
+        color: color('grey-dark');
+        font-size: 18px;
+        line-height: 150%;
+    }
+    .field-name-field-cute-title {
+        color: color('grey-dark');
+        font: {
+            family: $montserrat;
+            size: 24px;
+            weight: bold;
+        }
+        text-transform: uppercase;
+    }
+}
+
+// Clients
+.view-id-clients.view-display-id-block {
+    @extend %view-centered;
+    @include column-view(2);
+    @include respond-to(m) {
+        @include column-view(4);
+    }
+    @include respond-to(xl) {
+        @include column-view(5);
+    }
+    .field-name-field-logo {
+        position: relative;
+        min-height: 150px;
+        width: 100%;
+        @include respond-to(m) {
+            min-height: 200px;
+        }
+        @include respond-to(l) {
+            min-height: 250px;
+        }
+        img {
+            position: absolute;
+            // top: 50%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            margin: auto;
+            max-height: 90%;
+            transition: 225ms;
+            width: auto;
+            max-width: 75%;
+            // filter: grayscale(100%);
+            // transform: translate(-50%, -50%);
+            &:hover {
+                // filter: grayscale(0);
+                // transition: 225ms;
+            }
+        }
+    }
+}
+
+.view-id-projects.teasers {
+    /* e.g. on the homepage */
+    @include column-view(1);
+    @include zen-respond-to(m) {
+        @include column-view(2);
+    }
+    @include zen-respond-to-grid($skip: (m, )) {
+        @include column-view(3);
+    }
+    .views-row {
+        @include zen-respond-to(bm) {
+            clear: left !important;
+        }
+    }
+    .slick-dots {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        text-align: center;
+        li {
+            display: inline;
+            &.slick-active button {
+                opacity: 1;
+            }
+        }
+        button {
+            font-size: 150%;
+            opacity: 0.75;
+        }
+    }
+}
+
+.section-featured-work .view-id-projects {
+    /* This is the main featured work listing */
+    $zen-columns: 12 !global;
+    @include zen-grid-container();
+    .views-row {
+        clear: both;
+        @include respond-to(bm) {
+            padding: 50px 0;
+        }
+        .node {
+            overflow: hidden;
+        }
+        .field-name-field-logo {
+            padding: 15px 0;
+        }
+        .group-images {
+            font-size: 0;
+            line-height: normal;
+            text-align: center;
+            @include zen-respond-to-grid() {
+                @include zen-grid-item(6,
+                1);
+                padding-top: 50px;
+            }
+        }
+        .group-content {
+            padding-top: 50px;
+            @include respond-to(m) {
+                padding: 80px 15px;
+            }
+            // .field-name-field-client h2 {
+            //     @include respond-to(bs) {
+            //         font-size: 1.25rem;
+            //     }
+            // }
+            h2,
+            h3,
+            p {
+                margin: 0.5rem 0;
+            }
+            h3 {
+                color: color('brand-primary');
+                font-weight: 500;
+            }
+            p {
+                color: color('grey-dark');
+                line-height: 175%;
+            }
+            a {
+                @extend %more-link;
+            }
+        }
+        &:nth-of-type(2n+1) {
+            background-color: color('white');
+            @include full-width-background-color(color('white'));
+            .group-images {
+                @include zen-respond-to-grid() {
+                    @include zen-grid-item(6,
+                    7);
+                }
+                .field-name-field-logo {
+                    @include respond-to(m) {
+                        text-align: right;
+                    }
+                }
+            }
+            .group-content {
+                @include zen-respond-to-grid() {
+                    @include zen-grid-item(6,
+                    1);
+                }
+            }
+        }
+        &:nth-of-type(2n+2) {
+            background-color: color('grey-extra-light');
+            @include full-width-background-color(color('grey-extra-light'));
+            .group-images {
+                @include respond-to(m) {
+                    @include zen-grid-item(6,
+                    1);
+                }
+                .field-name-field-logo {
+                    @include respond-to(m) {
+                        text-align: left;
+                    }
+                }
+            }
+            .group-content {
+                @include respond-to(m) {
+                    @include zen-grid-item(6,
+                    7);
+                }
+            }
+        }
+    }
+}
+
+.region-content-bottom .view-id-projects {
+    /* This is the "Featured Projects" in the red bar at the bottom of pages. */
+    @extend %view-centered;
+    // @include column-view(3, 4);
+    @include zen-respond-to-grid() {
+        margin-left: 20px; // hack for now ...
+        @include column-view(3,
+        $parent: '.slick__slider', $child: '.slide', $debug: true);
+    }
+    // padding-bottom: 60px;
+    .slick__arrow {
+        display: none;
+    }
+}
+
+#block-views-projects-block-related-projects {
+    padding-bottom: 60px;
+    .block__title {
+        margin-top: 0;
+    }
+    .view-projects {
+        @include column-view(1);
+        @include zen-respond-to-grid() {
+            @include column-view(3);
+        }
+    }
+}
+
+.view-id-people {
+    /*
+	.views-row {
+		padding-top: 20px;
+
+		@include respond-to(m) {
+			padding-top: 0;
+		}
+	}
+
+	.views-row-odd {
+		@include full-width-background-color(color('grey-extra-light'));
+	}
+*/
+    @extend %clearfix;
+    clear: both;
+    @include zen-respond-to(m) {
+        @include column-view($n: 2, $modifier: 1, $parent: '.view-content', $child: '.views-row', $debug: false);
+    }
+    @include zen-respond-to-grid($skip: (m)) {
+        @include column-view($n: 3, $modifier: 1, $parent: '.view-content', $child: '.views-row', $debug: false);
+    }
+    .node-person {
+        position: relative;
+        .group-overview {
+            background-color: color(brand-primary);
+            text-transform: uppercase;
+            /*
+			@include zen-respond-to-grid() {
+	      @include zen-grid-item(4, 1);
+	    }
+*/
+            /*
+			@include respond-to(m) {
+				height: 300px;
+				overflow: hidden;
+				position: absolute;
+				top: 30px;
+				right: 0;
+				left: 0;
+			}
+
+			@include respond-to(l) {
+//				height: auto;
+				top: 0;
+				bottom: 0;
+			}
+*/
+            >div.field-name-field-headshots {
+                margin: 0 -20px -20px; // undo pad
+            }
+            .field-name-field-headshots {
+                padding: 0 20px 20px;
+                @include respond-to(m) {
+                    height: 100%;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
+                    bottom: 20%;
+                    left: 0;
+                }
+            }
+            div.headshot {
+                background: {
+                    size: cover;
+                    repeat: no-repeat;
+                    position: center center;
+                }
+                padding: 0;
+                padding-bottom: 100%;
+                width: 100%;
+                /*
+				@include respond-to(m) {
+					height: 95%;
+					padding-bottom: 0;
+				}
+*/
+            }
+            .group-person-brief {
+                background-color: color('brand-primary');
+                display: table;
+                height: 100px;
+                padding: 15px;
+                width: 100%;
+                /*
+				@include respond-to(m) {
+					position: absolute;
+					right: 0;
+					bottom: 0;
+					left: 0;
+				}
+*/
+                h3 {
+                    display: none; // Drupal
+                }
+            }
+            .field-group-format-wrapper {
+                display: table-cell !important; // Set to 'block' inline
+                vertical-align: middle;
+            }
+            h4,
+            h5 {
+                @extend %reversed-header;
+                line-height: normal;
+                margin-top: 0;
+                margin-bottom: 0;
+            }
+            h5 {
+                margin-top: 0.5em;
+            }
+            .views-row-even & {
+                background-color: color(brand-secondary);
+            }
+        }
+        .group-detail {
+            display: none;
+            padding: {
+                top: 30px;
+                right: 15px;
+                left: 15px;
+            }
+            ;
+            /*
+			@include zen-respond-to-grid() {
+	      @include zen-grid-item(7, 6);
+				padding: 0;
+	    }
+*/
+            h2,
+            h3,
+            p {
+                margin: 0;
+            }
+            h2 {
+                margin: 30px 0;
+            }
+            h3 {
+                margin-bottom: 15px;
+                text-transform: uppercase;
+            }
+        }
+        .paragraphs-items-field-factoids {
+            border-top: 1px solid #dfdfdf;
+            margin-top: 15px;
+            overflow: auto;
+            padding: 15px 0;
+        }
+        .paragraphs-item-factoid {
+            display: table;
+            padding-bottom: 15px;
+            overflow: auto;
+            @include respond-to(l) {
+                float: left;
+                padding-bottom: 0;
+                width: 50%;
+            }
+            .field-name-field-icon,
+            .field-name-field-text {
+                display: table-cell;
+            }
+            .field-name-field-icon {
+                width: 60px;
+                img {
+                    display: block;
+                }
+            }
+            .field-name-field-text {
+                vertical-align: middle;
+                p {
+                    color: color('grey-dark');
+                    font-size: 18px;
+                    line-height: normal;
+                    margin: 0;
+                    padding-left: 10px;
+                    padding-right: 20px;
+                    strong {
+                        display: block;
+                        font-family: $montserrat;
+                        text-transform: uppercase;
+                    }
+                }
+            }
+        }
+    }
+}

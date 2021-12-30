@@ -1,0 +1,82 @@
+// Compatibility Fixes
+//
+// Styles for helping problem browsers like IE
+// ==========================================================================
+
+// — SVGs—
+// Internet Explorer has many issues with
+// SVGs, so we'll resort to PNGs instead
+.no-smil {
+  // Header Banner
+  header.header .region-header .block-ds-extras:after {
+    background-image: url('../images-source/header-bg-splatter.png');
+  }
+
+  // 'Our Capabilities' splash shape overlays
+  .view-capabilities {
+    .views-row,
+  	.slide {
+      &:nth-of-type(2n+1) .field-name-field-image::after {
+        @include splatter-overlay($use_vectors: false);
+      }
+
+      &:nth-of-type(2n+2) .field-name-field-image::after {
+        @include splatter-overlay(2, $use_vectors: false);
+      }
+    }
+  }
+
+  // 'Capability' detail pages
+  .node-type-capability .header.header .inner::after {
+    background-image: url('../images-source/Looping-Banner-Wave-Reversed-White.png');
+  }
+
+  // 'Project' detail pages
+  body.node-type-project .region-content-bottom,
+  .region-content-bottom {
+  	&:before {
+  		background: {
+        image: url('../images-source/content-bottom-border.png');
+        position: center bottom;
+        size: contain;
+      }
+      height: 40px;
+  	}
+  }
+}
+
+// — Flexbox —
+// Internet Explorer also doesn't fully support flexbox
+.no-flexboxlegacy {
+  // 'Featured Work' at '/' and on 'Capability' detail pages
+  .view-id-projects.teasers .view-content > .views-row,
+  .view-id-projects.teasers .slide__content {
+    display: table;
+    width: 100%;
+
+    .node-project.view-mode-teaser {
+      display: table-cell;
+      vertical-align: middle;
+    }
+  }
+
+  .region-content-bottom .view-id-projects.teasers .view-content > .views-row,
+  .region-content-bottom .view-id-projects.teasers .slide__content {
+    &:hover .node-project.view-mode-teaser {
+      display: table-cell;
+    }
+
+    .node-project.view-mode-teaser {
+      display: block;
+      position: static;
+    }
+  }
+}
+
+
+// Turn off ugly shadow stuff in chrome
+*:focus {
+  outline-style:none;
+  box-shadow:none;
+  border-color:transparent;
+}
